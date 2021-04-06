@@ -6,6 +6,8 @@ const character = {
     health: 100,
     elHP: document.querySelector("#health-character"),
     elScrl: document.querySelector("#progressbar-character"),
+    damage: damage,
+    renderHP: renderHP,
 };
 
 const enemy = {
@@ -14,6 +16,8 @@ const enemy = {
     health: 100,
     elHP: document.querySelector("#health-enemy"),
     elScrl: document.querySelector("#progressbar-enemy"),
+    damage: damage,
+    renderHP: renderHP,
 };
 
 const kickBtn = document.querySelector("#btn-kick"),
@@ -25,8 +29,8 @@ const kickBtn = document.querySelector("#btn-kick"),
 function startGame() {
     console.log("game start!");
 
-    renderHP(character);
-    renderHP(enemy);
+    character.renderHP();
+    enemy.renderHP();
 
     kickBtn.addEventListener("click", kick);
     punchBtn.addEventListener("click", punch); //???    кАК ПЕРЕДАВАТЬ ПАРАМЕТРЫ В CALLBACK
@@ -40,41 +44,38 @@ function random(param) {
     return result;
 }
 
-function damage(persons, damageEffect) {
-    persons.forEach((person, index, persons) => {
-        person.health -= random(damageEffect);
-        // console.log("аргумент damageEffect " + damageEffect);
+function damage(damageEffect) {
+    this.health -= random(damageEffect);
+    // console.log("аргумент damageEffect " + damageEffect);
 
-        // console.log(
-        //     person.name + "получил повреждение " + random(damageEffect)
-        // );
-        if (person.health <= 0) {
-            person.health = 0;
-            if (index == 0) {
-                console.log(persons[index + 1].name + " выиграл");
-            } else {
-                console.log(persons[index - 1].name + " выиграл");
-            }
-            kickBtn.disabled = "true";
-            punchBtn.disabled = "true";
-        }
+    // console.log(
+    //     person.name + "получил повреждение " + random(damageEffect)
+    // );
+    if (this.health <= 0) {
+        this.health = 0;
+        console.log(this.name + " проиграл!");
 
-        renderHP(person);
-    });
+        kickBtn.disabled = "true";
+        punchBtn.disabled = "true";
+    }
+
+    this.renderHP();
 }
 
 function kick() {
-    damage([character, enemy], 40);
+    character.damage(40);
+    enemy.damage(40);
     // damage(enemy);
 }
 
 function punch() {
-    damage([character, enemy], 10);
+    character.damage(10);
+    enemy.damage(10);
 }
 
-function renderHP(person) {
-    person.elHP.innerHTML = person.health + "/" + person.healthMax;
-    person.elScrl.style.width = (person.health * 100) / person.healthMax + "%";
+function renderHP() {
+    this.elHP.innerHTML = this.health + "/" + this.healthMax;
+    this.elScrl.style.width = (this.health * 100) / this.healthMax + "%";
 }
 
 startGame();
