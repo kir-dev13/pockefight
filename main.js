@@ -9,7 +9,7 @@ const character = {
 };
 
 const enemy = {
-    name: "Charmanber",
+    name: "Charmander",
     healthMax: 100,
     health: 100,
     elHP: document.querySelector("#health-enemy"),
@@ -48,7 +48,7 @@ function damage(persons, damageEffect) {
         // console.log(
         //     person.name + "получил повреждение " + random(damageEffect)
         // );
-        if (person.health < 0) {
+        if (person.health <= 0) {
             person.health = 0;
             if (index == 0) {
                 console.log(persons[index + 1].name + " выиграл");
