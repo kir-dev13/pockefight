@@ -1,5 +1,10 @@
 // "use strict";
 
+const gameSetting = {
+    kickMax: 3,
+    punchMax: 5,
+};
+
 const character = {
     name: "Pickachu",
     healthMax: 100,
@@ -59,7 +64,7 @@ function damage(damageEffect) {
         this === enemy
             ? generateLog(this, character.name, damageHP)
             : generateLog(this, enemy.name, damageHP);
-    // console.log(log);
+    // console.log(count);
 
     if (this.health <= 0) {
         this.health = 0;
@@ -72,13 +77,15 @@ function damage(damageEffect) {
     this.renderHP();
 }
 
-function kick() {
+function kick(event) {
+    countKick(event.target, gameSetting.kickMax);
     character.damage(40);
     enemy.damage(40);
     // damage(enemy);
 }
 
-function punch() {
+function punch(event) {
+    countPunch(event.target, gameSetting.punchMax);
     character.damage(10);
     enemy.damage(10);
 }
@@ -116,5 +123,20 @@ function generateLog(firstPerson, secondPerson, damageHP) {
     logP.innerHTML = result;
     // console.log(logDiv.children[0]);
 }
+
+function countBtnPress(btn, maxPress) {
+    let count = 0;
+    return function countAddOne(btn, maxPress) {
+        count++;
+        // console.log(count);
+        if (count === maxPress) {
+            btn.disabled = "true";
+        }
+        console.log("Осталось нажатий " + (maxPress - count));
+    };
+}
+
+let countKick = countBtnPress();
+let countPunch = countBtnPress();
 
 startGame();
