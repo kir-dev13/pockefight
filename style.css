@@ -579,3 +579,10 @@ h1 {
 .action label {
     padding: 6px 0;
 }
+
+.logs {
+    margin: auto;
+    width: 60%;
+    max-height: 120px;
+    overflow: auto;
+}

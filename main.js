@@ -29,6 +29,14 @@ const kickBtn = document.querySelector("#btn-kick"),
     punchBtn = document.querySelector("#btn-punch");
 // console.log(kick);
 
+kickBtn.innerHTML += ` (${gameSetting.kickMax})`;
+punchBtn.innerHTML += ` (${gameSetting.punchMax})`;
+
+let fightBtns = document.querySelectorAll(".button");
+// const gameSettingKeys = Object.keys(gameSetting);
+// console.log(gameSettingKeys);
+
+// fightBtns.forEach((item) => {});
 // console.log(random(20));
 
 function startGame() {
@@ -79,6 +87,7 @@ function damage(damageEffect) {
 
 function kick(event) {
     countKick(event.target, gameSetting.kickMax);
+
     character.damage(40);
     enemy.damage(40);
     // damage(enemy);
@@ -115,24 +124,44 @@ function generateLog(firstPerson, secondPerson, damageHP) {
         firstPerson.healthMax
     }`;
 
+    // let logP = document.createElement("p");
+    // logP.classList.add("log-item");
+
+    // let logDiv = document.querySelector(".logs");
+    // logDiv.insertBefore(logP, logDiv.children[0]);
+    // logP.innerHTML = result;
+    // console.log(logDiv.children[0]);
+    innerLog(result);
+}
+
+function innerLog(log) {
     let logP = document.createElement("p");
     logP.classList.add("log-item");
 
     let logDiv = document.querySelector(".logs");
     logDiv.insertBefore(logP, logDiv.children[0]);
-    logP.innerHTML = result;
-    // console.log(logDiv.children[0]);
+    logP.innerHTML = log;
 }
 
 function countBtnPress(btn, maxPress) {
     let count = 0;
     return function countAddOne(btn, maxPress) {
         count++;
+        let pressBalance = maxPress;
         // console.log(count);
         if (count === maxPress) {
             btn.disabled = "true";
         }
-        console.log("Осталось нажатий " + (maxPress - count));
+        // console.log("Осталось нажатий " + (maxPress - count));
+        // pressBalance = maxPress - count;
+        pressBalance = maxPress - count;
+        let result = `Осталось нажатий: ${maxPress - count}`;
+
+        innerLog(result);
+        btn.innerHTML =
+            btn.innerHTML.substring(0, btn.innerHTML.length - 3) +
+            `(${pressBalance})`;
+        // btn.innerHTML = btn.innerHTML.substring(-1, 5) + `(${pressBalance})`;
     };
 }
 
